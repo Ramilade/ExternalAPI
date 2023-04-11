@@ -31,9 +31,12 @@ public class RemoteApiTester implements CommandLineRunner {
         System.out.println(randomStr);
         callSlowEndpointBlocking();
         callSlowEndpointNonBlocking();
-        getGenderForName("Lars");
+        Mono<Gender> genderMono = getGenderForName("Lars");
+        Gender gender = genderMono.block();
+        System.out.println(gender);
         getGendersBlocking();
         getGendersNonBlocking();
+
 
 
     }
@@ -83,6 +86,7 @@ public class RemoteApiTester implements CommandLineRunner {
                 .bodyToMono(Gender.class);
         return gender;
     }
+
 
     List<String> names = Arrays.asList("lars", "peter", "sanne", "kim", "david", "maja");
 
