@@ -31,7 +31,7 @@ public class RemoteApiTester implements CommandLineRunner {
         System.out.println(randomStr);
         callSlowEndpointBlocking();
         callSlowEndpointNonBlocking();
-        getGenderForName("John");
+        getGenderForName("Lars");
         getGendersBlocking();
         getGendersNonBlocking();
 
@@ -102,10 +102,5 @@ public class RemoteApiTester implements CommandLineRunner {
         long end = System.currentTimeMillis();
         System.out.println("Time for six external requests, NON-BLOCKING: "+ (end-start));
     }
-
-
-
-
-
 
 }
