@@ -1,5 +1,6 @@
-package com.example.apiex1.api;
+package com.example.apiex1.entity;
 
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-class Gender {
+public class Gender {
     String gender;
     String name;
     int count;
