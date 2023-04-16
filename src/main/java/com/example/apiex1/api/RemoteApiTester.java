@@ -1,10 +1,13 @@
-package com.example.apiex1.service;
+package com.example.apiex1.api;
 
 
-import com.example.apiex1.dto.MyCombinedResponse;
+import com.example.apiex1.dto.CombinedResponse;
 import com.example.apiex1.entity.Age;
 import com.example.apiex1.entity.Gender;
 import com.example.apiex1.entity.Nationality;
+import com.example.apiex1.repository.CombinedResponseRepository;
+import com.example.apiex1.service.CombinedResponseService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -18,6 +21,14 @@ import java.util.stream.Collectors;
 
 @Controller
 public class RemoteApiTester implements CommandLineRunner {
+
+    CombinedResponseRepository combinedResponseRepository;
+    @Autowired
+    CombinedResponseService combinedResponseService;
+
+    public RemoteApiTester(CombinedResponseRepository combinedResponseRepository) {
+        this.combinedResponseRepository = combinedResponseRepository;
+    }
 
     private Mono<String> callSlowEndpoint(){
         Mono<String> slowResponse = WebClient.create()
@@ -40,7 +51,7 @@ public class RemoteApiTester implements CommandLineRunner {
         System.out.println(gender);
         getGendersBlocking();
         getGendersNonBlocking();*/
-        MyCombinedResponse res= fetchNameDetails("peter").block();
+        CombinedResponse res= fetchNameDetails("peter").block();
         System.out.println(res);
 
 
@@ -111,16 +122,17 @@ public class RemoteApiTester implements CommandLineRunner {
         return nationality;
     }
 
-    public Mono<MyCombinedResponse> fetchNameDetails(String name){
+
+
+    public Mono<CombinedResponse> fetchNameDetails(String name){
         Mono<Gender> gender = getGenderForName(name);
         Mono<Age> age = getAgeForName(name);
         Mono<Nationality> nationality = getNationalityForName(name);
+        combinedResponseService.saveCombinedResponse(gender.block(),age.block(), nationality.block());
         return  Mono.zip(gender, age, nationality)
-            .map(tuple -> new MyCombinedResponse(tuple.getT1(), tuple.getT2(), tuple.getT3()));
+            .map(tuple -> new CombinedResponse(tuple.getT1(), tuple.getT2(), tuple.getT3()));
 
     }
-MyCombinedResponse res = fetchNameDetails("Lars").block();
-
 
     List<String> names = Arrays.asList("lars", "peter", "sanne", "kim", "david", "maja");
 

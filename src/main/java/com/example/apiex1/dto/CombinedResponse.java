@@ -4,6 +4,9 @@ package com.example.apiex1.dto;
 import com.example.apiex1.entity.Age;
 import com.example.apiex1.entity.Gender;
 import com.example.apiex1.entity.Nationality;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +14,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MyCombinedResponse {
+@Entity
+public class CombinedResponse {
+  @Id
+  @Column(name = "name")
   String name;
   String gender;
   double genderProbability;
@@ -20,7 +26,7 @@ public class MyCombinedResponse {
   String country;
   double countryProbability;
 
-public MyCombinedResponse(Gender g, Age a, Nationality n){
+public CombinedResponse(Gender g, Age a, Nationality n){
   name = g.getName();
   gender =  g.getGender();
   genderProbability = g.getProbability();
@@ -33,7 +39,7 @@ public MyCombinedResponse(Gender g, Age a, Nationality n){
 
   @Override
   public String toString() {
-    return "MyCombinedResponse{" +
+    return "CombinedResponse{" +
         "name='" + name + '\'' +
         ", gender='" + gender + '\'' +
         ", genderProbability=" + genderProbability +
